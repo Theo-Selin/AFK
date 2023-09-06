@@ -1,20 +1,27 @@
 import express from "express";
 import dotenv from "dotenv";
+import { MongoClient, ServerApiVersion } from "mongodb";
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-dotenv.config();
-
-const { MongoClient } = require("mongodb");
-
 const uri = process.env.MONGODB_URI;
 
+// START SERVER //
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+// CONNECT TO MONGODB //
 async function connectToMongoDB() {
   const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
   });
-
   try {
     await client.connect();
     console.log("Connected to MongoDB");
@@ -26,14 +33,4 @@ async function connectToMongoDB() {
     await client.close();
   }
 }
-
-// Call connectToMongoDB to establish the connection.
 connectToMongoDB();
-
-app.get("/message", (req, res) => {
-  res.json({ message: "Hello, Express with ES6!" });
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
