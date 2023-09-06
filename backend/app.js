@@ -8,6 +8,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 const uri = process.env.MONGODB_URI;
 
+// ROUTES //
+const messagesRoutes = require("./routes/messages");
+
+app.use("/messages", messagesRoutes);
+
 // START SERVER //
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
