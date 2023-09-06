@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <button @click="fetchMessage">Get Message</button>
+    <p>{{ message }}</p>
   </div>
 </template>
 
