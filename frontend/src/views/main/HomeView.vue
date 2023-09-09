@@ -1,18 +1,26 @@
 <template>
   <div class="home">
-    <button @click="fetchMessage">Get Message</button>
-    <p>{{ message }}</p>
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome, {{ user }}!</p>
+      <button @click="logout">Logout</button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import axios from "axios";
 import { ref } from "vue";
 
-const message = ref("");
+const user = ref({});
 
-const fetchMessage = async () => {
-  const response = await fetch("/api/messages/hello");
-  const data = await response.json();
-  message.value = data.message;
+const logout = async () => {
+  try {
+    await axios.get("/api/auth/logout");
+    // Redirect to the login page after logout
+    window.location.href = "/login";
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
 };
 </script>

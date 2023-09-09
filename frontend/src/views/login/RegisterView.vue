@@ -1,9 +1,9 @@
 <template>
-  <div class="login">
+  <div class="register">
     <label for="email">email</label>
-    <input v-model="email" type="email" />
+    <input v-model="email" name="email" />
     <label for="password">password</label>
-    <input v-model="password" type="password" />
+    <input v-model="password" name="password" />
     <button @click="submitForm">Submit</button>
   </div>
 </template>
@@ -22,12 +22,11 @@ const submitForm = async () => {
       email: email.value,
       password: password.value,
     };
-    const response = await axios.post("/api/auth/login", requestBody, {
+    const response = await axios.post("/api/auth/register", requestBody, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    window.location.href = "/";
 
     const data = response.data;
     // Handle the response data as needed

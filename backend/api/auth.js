@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import { validationResult } from "express-validator";
 import { registrationValidation } from "./middlewares/validations.js";
+import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
 const router = express.Router();
@@ -36,6 +37,35 @@ router.post("/register", registrationValidation, async (req, res) => {
     console.error("Registration error:", err);
     res.status(500).json({ message: "Registration failed" });
   }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    mongoose.connect(process.env.MONGODB_URI);
+    const secretKey = process.env.JWT_SECRET_KEY;
+    const user = await User.findOne({ email });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
+      expiresIn: "1h",
+    });
+
+    res.cookie("authToken", token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+    res
+      .status(200)
+      .json({ message: "Login successful", user: { email: user.email } });
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ message: "Login failed" });
+  }
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("authToken").json({ message: "Logout successful" });
 });
 
 module.exports = router;
