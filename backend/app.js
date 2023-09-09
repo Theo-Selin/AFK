@@ -8,10 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const uri = process.env.MONGODB_URI;
 
-// ROUTES //
-const messagesRoutes = require("./routes/messages");
-
-app.use("/messages", messagesRoutes);
+app.use(express.json());
 
 // START SERVER //
 app.listen(port, () => {
@@ -39,3 +36,10 @@ async function connectToMongoDB() {
   }
 }
 connectToMongoDB();
+
+// ROUTES //
+const messagesRoutes = require("./api/messages");
+const authRoutes = require("./api/auth");
+
+app.use("/messages", messagesRoutes);
+app.use("/auth", authRoutes);
