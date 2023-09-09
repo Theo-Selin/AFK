@@ -1,10 +1,20 @@
 <template>
-  <div class="login">
-    <label for="email">email</label>
-    <input v-model="email" type="email" />
-    <label for="password">password</label>
-    <input v-model="password" type="password" />
-    <button @click="submitForm">Submit</button>
+  <div class="login-wrapper">
+    <div class="login-container">
+      <div class="login-title">
+        <h1>Login</h1>
+      </div>
+      <div class="input-wrapper">
+        <label for="email">E-mail</label>
+        <input v-model="email" type="email" id="email" />
+      </div>
+      <div class="input-wrapper">
+        <label for="password">Password</label>
+        <input v-model="password" type="password" id="password" />
+      </div>
+
+      <button @click="submitForm" class="submit-button">Submit</button>
+    </div>
   </div>
 </template>
 
@@ -38,3 +48,7 @@ const submitForm = async () => {
   }
 };
 </script>
+
+<style scoped>
+@import "./styles/_login.css";
+</style>
