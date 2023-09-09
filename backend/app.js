@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import { MongoClient, ServerApiVersion } from "mongodb";
-import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -10,7 +9,6 @@ const port = process.env.PORT || 3000;
 const uri = process.env.MONGODB_URI;
 
 app.use(express.json());
-app.use(cookieParser());
 
 // START SERVER //
 app.listen(port, () => {

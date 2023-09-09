@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div>
-      <h1>Dashboard</h1>
+      <h1>First Page</h1>
       <p>Welcome, {{ user }}!</p>
       <button @click="logout">Logout</button>
     </div>
@@ -10,14 +10,26 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
-const user = ref({});
+const user = ref("");
+
+onMounted(() => {
+  getUser();
+});
+
+const getUser = async () => {
+  try {
+    const response = await axios.get("/api/auth/user");
+    user.value = response.data.user.email;
+  } catch (error) {
+    console.error("Get user error:", error);
+  }
+};
 
 const logout = async () => {
   try {
     await axios.get("/api/auth/logout");
-    // Redirect to the login page after logout
     window.location.href = "/login";
   } catch (error) {
     console.error("Logout error:", error);
