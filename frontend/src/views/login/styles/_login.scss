@@ -31,15 +31,12 @@
     padding: 5px 20px;
     cursor: pointer;
     border: none;
-    @apply rounded-lg bg-sky-500 text-white transition-all
-}
-
-.submit-button:hover {
-    @apply bg-sky-600 duration-300 ease-in
+    @apply rounded-lg bg-sky-500 text-white hover:bg-sky-600 duration-150 ease-in
 }
 
 .link {
+    text-decoration: none;
     font-size: 0.8rem;
     font-weight: 500;
-    @apply text-gray-700 mb-10
+    @apply text-gray-700 mb-10 hover:text-sky-500 duration-150 ease-in
 }

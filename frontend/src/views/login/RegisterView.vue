@@ -18,7 +18,6 @@ import { ref } from "vue";
 import axios from "axios";
 import TextfieldInput from "@/components/Inputs/TextfieldInput.vue";
 import router from "@/router";
-import store from "@/store";
 
 const username = ref("");
 const email = ref("");
