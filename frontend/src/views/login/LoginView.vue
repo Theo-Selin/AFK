@@ -1,30 +1,52 @@
 <template>
-  <div class="wrapper">
-    <div class="container">
-      <div class="title">
-        <h1>Login</h1>
+  <Transition appear>
+    <div v-if="showModal" class="wrapper">
+      <div class="container">
+        <div class="title">
+          <h1>Login</h1>
+        </div>
+        <textfield-input
+          v-model="email"
+          type="email"
+          label="Email"
+          id="email"
+        />
+        <textfield-input
+          v-model="password"
+          type="password"
+          label="Password"
+          id="password"
+        />
+        <button @click="submitForm" class="submit-button">Submit</button>
+        <button @click="toggleModal" class="watch-button">Watch Video</button>
       </div>
-      <textfield-input v-model="email" type="email" label="Email" id="email" />
-      <textfield-input
-        v-model="password"
-        type="password"
-        label="Password"
-        id="password"
-      />
-      <button @click="submitForm" class="submit-button">Submit</button>
+      <p class="link-label">Don't have an account?</p>
+
+      <router-link :to="{ name: 'register' }" class="link"
+        >Create account</router-link
+      >
     </div>
-    <router-link to="/register" class="link">Create account</router-link>
-  </div>
+  </Transition>
+  <button v-if="!showModal" @click="toggleModal" class="modal-button">
+    Enter
+  </button>
+  <tube-player />
+  <div v-if="showModal" class="overlay" id="overlay"></div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import TubePlayer from "@/components/Videoplayer/TubePlayer.vue";
+import axios from "axios";
+import TextfieldInput from "@/components/Inputs/TextfieldInput.vue";
 
 const email = ref("");
 const password = ref("");
+const showModal = ref(true);
 
-import axios from "axios";
-import TextfieldInput from "@/components/Inputs/TextfieldInput.vue";
+const toggleModal = () => {
+  showModal.value = !showModal.value;
+};
 
 const submitForm = async () => {
   try {
@@ -51,4 +73,14 @@ const submitForm = async () => {
 
 <style scoped>
 @import "./styles/_login.scss";
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>
