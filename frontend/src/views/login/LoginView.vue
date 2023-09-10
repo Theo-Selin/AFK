@@ -1,20 +1,19 @@
 <template>
-  <div class="login-wrapper">
-    <div class="login-container">
-      <div class="login-title">
+  <div class="wrapper">
+    <div class="container">
+      <div class="title">
         <h1>Login</h1>
       </div>
-      <div class="input-wrapper">
-        <label for="email">E-mail</label>
-        <input v-model="email" type="email" id="email" />
-      </div>
-      <div class="input-wrapper">
-        <label for="password">Password</label>
-        <input v-model="password" type="password" id="password" />
-      </div>
-
+      <textfield-input v-model="email" type="email" label="Email" id="email" />
+      <textfield-input
+        v-model="password"
+        type="password"
+        label="Password"
+        id="password"
+      />
       <button @click="submitForm" class="submit-button">Submit</button>
     </div>
+    <router-link to="/register" class="link">Create account</router-link>
   </div>
 </template>
 
@@ -25,6 +24,7 @@ const email = ref("");
 const password = ref("");
 
 import axios from "axios";
+import TextfieldInput from "@/components/Inputs/TextfieldInput.vue";
 
 const submitForm = async () => {
   try {
@@ -50,5 +50,5 @@ const submitForm = async () => {
 </script>
 
 <style scoped>
-@import "./styles/_login.css";
+@import "./styles/_login.scss";
 </style>
