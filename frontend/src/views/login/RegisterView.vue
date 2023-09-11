@@ -29,7 +29,7 @@
         </button>
       </div>
       <p class="link-label">Already have an account?</p>
-      <router-link :to="{ name: 'login' }" class="link">Login</router-link>
+      <router-link :to="{ name: 'login' }" class="link">Login here</router-link>
     </div>
   </Transition>
   <button v-if="!showModal" @click="toggleModal" class="modal-button">

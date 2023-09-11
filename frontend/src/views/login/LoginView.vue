@@ -17,7 +17,7 @@
           label="Password"
           id="password"
         />
-        <button @click="submitForm" class="submit-button">Submit</button>
+        <button @click="submitForm" class="submit-button">Login</button>
         <button @click="toggleModal" class="watch-button">Watch Video</button>
       </div>
       <p class="link-label">Don't have an account?</p>
