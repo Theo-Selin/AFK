@@ -4,6 +4,7 @@
       <h1>First Page</h1>
       <p>Welcome, {{ user }}!</p>
       <button @click="logout">Logout</button>
+      <phaser-game />
     </div>
   </div>
 </template>
@@ -11,6 +12,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { onMounted, ref } from "vue";
+import PhaserGame from "@/components/Phaser/PhaserGame.vue";
 
 const user = ref("");
 
