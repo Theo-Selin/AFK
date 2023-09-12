@@ -1,0 +1,15 @@
+#phaser {
+  width: 628px;
+  height: 493px;
+  border-radius: 2em;
+  overflow: hidden;
+  @apply shadow-lg shadow-black;
+}
+
+.logout {
+  height: 35px;
+  width: 235px;
+  cursor: pointer;
+  border: none;
+  @apply rounded-lg bg-orange-500 text-white hover:bg-orange-600 duration-150 ease-in;
+}

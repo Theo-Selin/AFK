@@ -1,10 +1,8 @@
 <template>
   <div class="home-wrapper">
     <div class="home-header">
-      <h1>First Page</h1>
-      <p>Welcome, {{ user }}!</p>
-      <button @click="logout">Logout</button>
       <phaser-game />
+      <button @click="logout" class="logout">Logout</button>
     </div>
   </div>
 </template>

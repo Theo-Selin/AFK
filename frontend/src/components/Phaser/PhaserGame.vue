@@ -1,45 +1,37 @@
 <template>
-  <div id="phaser-game"></div>
+  <div id="phaser"></div>
 </template>
 
 <script setup lang="ts">
 import Phaser from "phaser";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
+import { GameScene } from "../../game/scenes/GameScene";
 
-class Demo extends Phaser.Scene {
-  constructor() {
-    super("demo");
-  }
-
-  preload = () => {
-    this.load.image(
-      "background",
-      "../../assets/backgrounds/1/bamboobridge.png"
-    );
-  };
-
-  create = () => {
-    this.add.image(400, 300, "background");
-  };
-}
+const game = ref<Phaser.Game>();
 
 const config = {
   type: Phaser.AUTO,
   backgroundColor: "#111111",
-  width: 800,
-  height: 600,
-  scene: Demo,
+  parent: "phaser", // ID of the DOM element to add the canvas to
+  width: 628,
+  height: 493,
+  scene: GameScene,
+  scale: {
+    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
+  },
 };
 
-const game = new Phaser.Game(config);
-
 onMounted(() => {
-  game;
+  game.value = new Phaser.Game(config);
+});
+
+onUnmounted(() => {
+  if (game.value) {
+    game.value.destroy(true);
+  }
 });
 </script>
 
 <style scoped>
-#phaser-game {
-  margin: 0 auto;
-}
+@import "./styles/_phaser-game.scss";
 </style>
