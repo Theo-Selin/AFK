@@ -32,9 +32,15 @@ router.post("/register", registrationValidation, async (req, res) => {
       password: hashedPassword,
     });
     // Save the user document to the database
-    await newUser.save();
+    const created = await newUser.save();
     // Respond with a success message
-    res.status(201).json({ message: "Registration successful" });
+    res.status(201).json({
+      message: "Registration successful",
+      user: {
+        username: created.username,
+        email: created.email,
+      },
+    });
   } catch (err) {
     console.error("Registration error:", err);
     res.status(500).json({ message: "Registration failed" });
@@ -57,7 +63,10 @@ router.post("/login", async (req, res) => {
     res.cookie("authToken", token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
     res
       .status(200)
-      .json({ message: "Login successful", user: { email: user.email } });
+      .json({
+        message: "Login successful",
+        user: { email: user.email, username: user.username },
+      });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Login failed" });

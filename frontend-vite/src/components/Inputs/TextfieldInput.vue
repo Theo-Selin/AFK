@@ -10,24 +10,24 @@
   </div>
 </template>
 
-<script setup>
-import { ref, defineEmits, watch } from "vue";
+<script setup lang="ts">
+import { ref, defineEmits, watch } from 'vue';
 
 const props = defineProps({
   type: String,
   id: String,
-  label: String,
+  label: String
 });
 
-const modelValue = ref("");
+const modelValue = ref('');
 
-const emits = defineEmits(["update:modelValue"]);
+const emits = defineEmits(['update:modelValue']);
 
 watch(modelValue, (newValue) => {
-  emits("update:modelValue", newValue);
+  emits('update:modelValue', newValue);
 });
 </script>
 
 <style scoped>
-@import "./styles/_input.scss";
+@import './styles/_input.scss';
 </style>

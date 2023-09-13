@@ -1,0 +1,16 @@
+.home-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 64px;
+  @apply bg-gray-900;
+
+  .game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    @apply bg-gray-900 shadow-sky-900 shadow-inner;
+  }
+}
