@@ -4,27 +4,32 @@
       :type="type"
       :id="id"
       :placeholder="label"
-      v-model="modelValue"
+      v-model="modelMapping"
       class="input"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, watch } from 'vue';
+import { defineEmits, computed } from 'vue';
 
-const props = defineProps({
-  type: String,
-  id: String,
-  label: String
-});
+interface Props {
+  type: string;
+  id: string;
+  label: string;
+  modelValue: string;
+}
 
-const modelValue = ref('');
+const props = defineProps<Props>();
+const emit = defineEmits(['update:modelValue']);
 
-const emits = defineEmits(['update:modelValue']);
-
-watch(modelValue, (newValue) => {
-  emits('update:modelValue', newValue);
+const modelMapping = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit('update:modelValue', value);
+  }
 });
 </script>
 

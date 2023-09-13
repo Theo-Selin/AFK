@@ -1,7 +1,9 @@
 <template>
-  <button class="submit-button" @click="$props.function">
+  <button class="submit-button" @click="emit('click')">
     <slot></slot>
   </button>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const emit = defineEmits(['click']);
+</script>
