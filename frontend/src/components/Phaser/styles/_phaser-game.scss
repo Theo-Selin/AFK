@@ -1,15 +1,20 @@
 #phaser {
-  width: 628px;
-  height: 493px;
-  border-radius: 2em;
+  position: relative;
+  border-radius: 8px;
   overflow: hidden;
-  @apply shadow-lg shadow-black;
 }
 
-.logout {
-  height: 35px;
-  width: 235px;
-  cursor: pointer;
-  border: none;
-  @apply rounded-lg bg-orange-500 text-white hover:bg-orange-600 duration-150 ease-in;
+#phaser::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 628px;
+  height: 493px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /*   background-image: url("@/game/assets/borders/border-silver.png");
+  background-size: cover; */
 }

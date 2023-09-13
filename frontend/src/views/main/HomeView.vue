@@ -1,8 +1,7 @@
 <template>
   <div class="home-wrapper">
-    <div class="home-header">
+    <div class="game-container">
       <phaser-game />
-      <button @click="logout" class="logout">Logout</button>
     </div>
   </div>
 </template>
