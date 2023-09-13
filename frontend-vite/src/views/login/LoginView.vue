@@ -6,13 +6,13 @@
           <h1>Login</h1>
         </div>
         <textfield-input
-          v-model="email"
+          v-model="formState.email"
           type="email"
           label="Email"
           id="email"
         />
         <textfield-input
-          v-model="password"
+          v-model="formState.password"
           type="password"
           label="Password"
           id="password"
@@ -35,13 +35,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import TubePlayer from '@/components/Videoplayer/TubePlayer.vue';
-import axios from 'axios';
-import TextfieldInput from '@/components/Inputs/TextfieldInput.vue';
 
-const email = ref('');
-const password = ref('');
+import TextfieldInput from '@/components/Inputs/TextfieldInput.vue';
+import { useAuthStore } from '@/stores';
+
+const authStore = useAuthStore();
+
+const formState = reactive({
+  email: '',
+  password: ''
+});
+
 const showModal = ref(true);
 
 const toggleModal = () => {
@@ -50,20 +56,7 @@ const toggleModal = () => {
 
 const submitForm = async () => {
   try {
-    const requestBody = {
-      email: email.value,
-      password: password.value
-    };
-    const response = await axios.post('/api/auth/login', requestBody, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    window.location.href = '/';
-
-    const data = response.data;
-    // Handle the response data as needed
-    console.log(data);
+    authStore.login({ email: formState.email, password: formState.password });
   } catch (error) {
     // Handle errors here, e.g., display an error message
     console.error('Error:', error);
