@@ -1,5 +1,7 @@
 import { CST } from '../CST';
 import Phaser from 'phaser';
+import { Character } from '../characters/Character';
+import type { Cursors } from '../characters/Character';
 
 import forest1 from '@/assets/sprites/forest/forest1.png';
 import forest2 from '@/assets/sprites/forest/forest2.png';
@@ -12,6 +14,8 @@ import forest8 from '@/assets/sprites/forest/forest8.png';
 import forest9 from '@/assets/sprites/forest/forest9.png';
 import forest10 from '@/assets/sprites/forest/forest10.png';
 import forest11 from '@/assets/sprites/forest/forest11.png';
+
+import character from '@/assets/sprites/characters/redhood.png';
 
 const AssetKeys = {
   LAYER_11: 'layer_11',
@@ -28,6 +32,8 @@ const AssetKeys = {
 };
 
 export class GameScene extends Phaser.Scene {
+  cursors!: Cursors;
+
   constructor() {
     super({ key: CST.SCENES.GAME });
   }
@@ -44,6 +50,8 @@ export class GameScene extends Phaser.Scene {
   private layer_10!: Phaser.GameObjects.TileSprite;
   private layer_11!: Phaser.GameObjects.TileSprite;
 
+  private character: Character | null = null;
+
   preload = () => {
     this.load.image(AssetKeys.LAYER_1, forest1);
     this.load.image(AssetKeys.LAYER_2, forest2);
@@ -56,6 +64,11 @@ export class GameScene extends Phaser.Scene {
     this.load.image(AssetKeys.LAYER_9, forest9);
     this.load.image(AssetKeys.LAYER_10, forest10);
     this.load.image(AssetKeys.LAYER_11, forest11);
+
+    this.load.spritesheet('character', character, {
+      frameWidth: 112,
+      frameHeight: 133
+    });
   };
 
   create = () => {
@@ -141,6 +154,8 @@ export class GameScene extends Phaser.Scene {
       AssetKeys.LAYER_10
     );
 
+    this.character = new Character(this, 200, 400);
+
     this.layer_11 = this.add.tileSprite(
       628 / 2,
       493 / 2,
@@ -151,6 +166,11 @@ export class GameScene extends Phaser.Scene {
   };
 
   update = () => {
+    if (this.character) {
+      // Call the update method of the character instance if it exists
+      this.character.update(this.cursors as Cursors);
+    }
+
     this.layer_2.tilePositionX += 0.05;
     this.layer_3.tilePositionX += 0.1;
     this.layer_4.tilePositionX += 0.15;
