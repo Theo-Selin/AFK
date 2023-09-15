@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import type { Enemy } from './Enemy';
 
 // Define a type or interface for cursors
 export interface Cursors {
@@ -11,20 +12,49 @@ export interface Cursors {
 }
 
 export class Character extends Phaser.GameObjects.Sprite {
-  speed: number;
+  inCombat: boolean = false;
+  hp: number = 100;
+  attackRange: number = 100;
 
+  enterCombatState() {
+    this.inCombat = true;
+    this.play('player_attack', true);
+    setTimeout(() => {
+      this.exitCombatState();
+    }, 3200);
+  }
+
+  exitCombatState() {
+    this.inCombat = false;
+    this.play('player_walk', true);
+  }
+
+  // Implement your attack logic here, e.g., applying damage to the enemy
+  attack(enemy: Enemy, attackRange: number, damageAmount: number) {
+    if (
+      Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y) <=
+      attackRange
+    ) {
+      enemy.takeDamage(damageAmount);
+    }
+  }
+
+  takeDamage(damageAmount: number) {
+    this.hp -= damageAmount;
+  }
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'character');
 
     // Add the character to the scene
     scene.add.existing(this);
+    scene.physics.world.enable(this);
 
     this.setScale(2);
     this.flipX = true;
 
     // Set up character animations
     scene.anims.create({
-      key: 'walk',
+      key: 'player_walk',
       frames: scene.anims.generateFrameNumbers('character', {
         start: 1,
         end: 24
@@ -34,19 +64,19 @@ export class Character extends Phaser.GameObjects.Sprite {
     });
 
     scene.anims.create({
-      key: 'run',
+      key: 'player_attack',
       frames: scene.anims.generateFrameNumbers('character', {
-        start: 1,
-        end: 24
+        start: 56,
+        end: 120
       }),
-      frameRate: 30,
-      repeat: -1 // Repeat indefinitely
+      frameRate: 20
     });
 
     // Set the character's initial animation
-    this.play('walk');
+    this.play('player_walk');
 
     // Character properties
-    this.speed = 150; // Adjust as needed
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    body.setSize(60, 60);
   }
 }

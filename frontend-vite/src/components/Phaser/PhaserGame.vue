@@ -16,6 +16,13 @@ const config = {
   width: 628,
   height: 493,
   scene: GameScene,
+  physics: {
+    default: 'arcade', // Use Arcade Physics as the default
+    arcade: {
+      gravity: { x: 0 } // Set gravity if needed
+      // You can configure other properties of the Arcade Physics engine here
+    }
+  },
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
   }

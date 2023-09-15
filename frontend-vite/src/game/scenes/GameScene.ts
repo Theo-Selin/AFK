@@ -1,6 +1,7 @@
 import { CST } from '../CST';
 import Phaser from 'phaser';
 import { Character } from '../characters/Character';
+import { Enemy } from '../characters/Enemy';
 import type { Cursors } from '../characters/Character';
 
 import forest1 from '@/assets/sprites/forest/forest1.png';
@@ -16,6 +17,7 @@ import forest10 from '@/assets/sprites/forest/forest10.png';
 import forest11 from '@/assets/sprites/forest/forest11.png';
 
 import character from '@/assets/sprites/characters/redhood.png';
+import enemy from '@/assets/sprites/characters/redhood.png';
 
 const AssetKeys = {
   LAYER_11: 'layer_11',
@@ -34,29 +36,6 @@ const AssetKeys = {
 export class GameScene extends Phaser.Scene {
   cursors!: Cursors;
 
-  handleCharacterAnimation = () => {
-    // Assuming you have defined 'cursors' to handle input
-    const cursors = this.input.keyboard?.createCursorKeys();
-
-    // Character movement logic
-    if (cursors?.right.isDown) {
-      this.layer_2.tilePositionX += 0.05;
-      this.layer_3.tilePositionX += 0.1;
-      this.layer_4.tilePositionX += 0.15;
-      this.layer_5.tilePositionX += 0.2;
-      this.layer_6.tilePositionX += 0.25;
-      this.layer_7.tilePositionX += 0.3;
-      this.layer_8.tilePositionX += 0.35;
-      this.layer_9.tilePositionX += 0.4;
-      this.layer_10.tilePositionX += 0.45;
-      this.layer_11.tilePositionX += 1;
-
-      // Adjust character's velocity, physics, etc. as needed
-    } else {
-      return;
-    }
-  };
-
   constructor() {
     super({ key: CST.SCENES.GAME });
   }
@@ -73,7 +52,8 @@ export class GameScene extends Phaser.Scene {
   private layer_10!: Phaser.GameObjects.TileSprite;
   private layer_11!: Phaser.GameObjects.TileSprite;
 
-  private character: Character | null = null;
+  private character!: Character | null;
+  private enemy!: Enemy | null;
 
   preload = () => {
     this.load.image(AssetKeys.LAYER_1, forest1);
@@ -89,6 +69,11 @@ export class GameScene extends Phaser.Scene {
     this.load.image(AssetKeys.LAYER_11, forest11);
 
     this.load.spritesheet('character', character, {
+      frameWidth: 112,
+      frameHeight: 133
+    });
+
+    this.load.spritesheet('enemy', enemy, {
       frameWidth: 112,
       frameHeight: 133
     });
@@ -177,7 +162,33 @@ export class GameScene extends Phaser.Scene {
       AssetKeys.LAYER_10
     );
 
+    //WORLD //
+    this.physics.world.setBounds(0, 0, width, height);
+
+    // PLAYER //
     this.character = new Character(this, 200, 400);
+
+    // ENEMY //
+    this.time.addEvent({
+      delay: 10000,
+      callback: () => {
+        this.enemy! = new Enemy(this, 800, 400);
+        this.enemy!.enterFromOutside(4500);
+        this.physics.add.collider(
+          this.character!,
+          this.enemy!,
+          this.playerEnemyCollision, // Callback function when collision occurs
+          undefined,
+          this
+        );
+      },
+      loop: true
+    }); // Add a timer event to spawn enemies
+
+    // INTERACTION //
+    this.physics.world.setBounds(0, 0, width, height);
+
+    // Enable collision between character and enemy
 
     this.layer_11 = this.add.tileSprite(
       628 / 2,
@@ -188,9 +199,31 @@ export class GameScene extends Phaser.Scene {
     );
   };
 
-  update = () => {
-    this.handleCharacterAnimation();
+  spawnEnemy = (scene: Phaser.Scene, x: number, y: number) => {
+    this.enemy! = new Enemy(scene, x, y);
+    this.enemy.enterFromOutside(4500);
+  };
 
+  playerEnemyCollision = () => {
+    this.character?.enterCombatState();
+    this.enemy?.enterCombatState();
+
+    this.layer_2.tilePositionX -= 0.05 * 2;
+    this.layer_3.tilePositionX -= 0.1 * 2;
+    this.layer_4.tilePositionX -= 0.15 * 2;
+    this.layer_5.tilePositionX -= 0.2 * 2;
+    this.layer_6.tilePositionX -= 0.25 * 2;
+    this.layer_7.tilePositionX -= 0.3 * 2;
+    this.layer_8.tilePositionX -= 0.35 * 2;
+    this.layer_9.tilePositionX -= 0.4 * 2;
+    this.layer_10.tilePositionX -= 0.45 * 2;
+    this.layer_11.tilePositionX -= 1 * 2;
+  };
+
+  update = () => {
+    if (this.character?.inCombat) {
+      this.character.attack(this.enemy!, 100, 1);
+    }
     this.layer_2.tilePositionX += 0.05;
     this.layer_3.tilePositionX += 0.1;
     this.layer_4.tilePositionX += 0.15;
