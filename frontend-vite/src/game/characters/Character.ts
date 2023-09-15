@@ -6,6 +6,7 @@ export interface Cursors {
   right: Phaser.Input.Keyboard.Key;
   up: Phaser.Input.Keyboard.Key;
   down: Phaser.Input.Keyboard.Key;
+  click: Phaser.Input.Pointer;
   // Add other keys as needed
 }
 
@@ -23,16 +24,6 @@ export class Character extends Phaser.GameObjects.Sprite {
 
     // Set up character animations
     scene.anims.create({
-      key: 'idle',
-      frames: scene.anims.generateFrameNumbers('character', {
-        start: 1,
-        end: 24
-      }),
-      frameRate: 30,
-      repeat: -1 // Repeat indefinitely
-    });
-
-    scene.anims.create({
       key: 'walk',
       frames: scene.anims.generateFrameNumbers('character', {
         start: 1,
@@ -42,20 +33,20 @@ export class Character extends Phaser.GameObjects.Sprite {
       repeat: -1 // Repeat indefinitely
     });
 
+    scene.anims.create({
+      key: 'run',
+      frames: scene.anims.generateFrameNumbers('character', {
+        start: 1,
+        end: 24
+      }),
+      frameRate: 30,
+      repeat: -1 // Repeat indefinitely
+    });
+
     // Set the character's initial animation
-    this.play('idle');
+    this.play('walk');
 
     // Character properties
     this.speed = 150; // Adjust as needed
   }
-
-  setVelocityX = (velocityX: number) => {
-    const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setVelocityX(velocityX);
-  };
-
-  setVelocityY = (velocityY: number) => {
-    const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setVelocityY(velocityY);
-  };
 }

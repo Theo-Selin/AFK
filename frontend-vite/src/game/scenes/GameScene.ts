@@ -34,6 +34,29 @@ const AssetKeys = {
 export class GameScene extends Phaser.Scene {
   cursors!: Cursors;
 
+  handleCharacterAnimation = () => {
+    // Assuming you have defined 'cursors' to handle input
+    const cursors = this.input.keyboard?.createCursorKeys();
+
+    // Character movement logic
+    if (cursors?.right.isDown) {
+      this.layer_2.tilePositionX += 0.05;
+      this.layer_3.tilePositionX += 0.1;
+      this.layer_4.tilePositionX += 0.15;
+      this.layer_5.tilePositionX += 0.2;
+      this.layer_6.tilePositionX += 0.25;
+      this.layer_7.tilePositionX += 0.3;
+      this.layer_8.tilePositionX += 0.35;
+      this.layer_9.tilePositionX += 0.4;
+      this.layer_10.tilePositionX += 0.45;
+      this.layer_11.tilePositionX += 1;
+
+      // Adjust character's velocity, physics, etc. as needed
+    } else {
+      return;
+    }
+  };
+
   constructor() {
     super({ key: CST.SCENES.GAME });
   }
@@ -166,10 +189,7 @@ export class GameScene extends Phaser.Scene {
   };
 
   update = () => {
-    if (this.character) {
-      // Call the update method of the character instance if it exists
-      this.character.update(this.cursors as Cursors);
-    }
+    this.handleCharacterAnimation();
 
     this.layer_2.tilePositionX += 0.05;
     this.layer_3.tilePositionX += 0.1;
