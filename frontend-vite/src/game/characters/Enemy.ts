@@ -59,7 +59,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     this.flipX = false;
 
     // Set up enemy animations
-    if (!this.anims.exists('enemy_walk')) {
+    if (!scene.anims.exists('enemy_walk')) {
       scene.anims.create({
         key: 'enemy_walk',
         frames: scene.anims.generateFrameNumbers('enemy', {
@@ -71,7 +71,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
       });
     }
 
-    if (!this.anims.exists('enemy_attack')) {
+    if (!scene.anims.exists('enemy_attack')) {
       scene.anims.create({
         key: 'enemy_attack',
         frames: scene.anims.generateFrameNumbers('enemy', {
@@ -83,7 +83,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
       });
     }
 
-    if (!this.anims.exists('enemy_death')) {
+    if (!scene.anims.exists('enemy_death')) {
       scene.anims.create({
         key: 'enemy_death',
         frames: scene.anims.generateFrameNumbers('enemy', {

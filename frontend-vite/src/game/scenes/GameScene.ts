@@ -172,11 +172,14 @@ export class GameScene extends Phaser.Scene {
     this.time.addEvent({
       delay: 10000,
       callback: () => {
-        this.enemy! = new Enemy(this, 800, 400);
-        this.enemy!.enterFromOutside(4500);
+        if (this.enemy) {
+          this.enemy.destroy();
+        }
+        this.enemy = new Enemy(this, 800, 400);
+        this.enemy.enterFromOutside(4500);
         this.physics.add.collider(
           this.character!,
-          this.enemy!,
+          this.enemy,
           this.playerEnemyCollision, // Callback function when collision occurs
           undefined,
           this
