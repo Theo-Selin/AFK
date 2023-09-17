@@ -1,35 +1,15 @@
 import * as Phaser from 'phaser';
-import type { Character } from './Character';
+import type { Player } from './Player';
 
 export class Enemy extends Phaser.GameObjects.Sprite {
   inCombat: boolean = false;
   hp: number = 410;
   attackRange: number = 100;
 
-  enterCombatState() {
-    this.inCombat = true;
-    this.play('enemy_attack', true);
-    if (this.hp <= 0) {
-      this.exitCombatState();
-    }
-  }
-
-  exitCombatState() {
-    this.play('enemy_death', true);
-    setTimeout(() => {
-      this.inCombat = false;
-      this.destroy(true);
-    }, 200);
-  }
-
-  // Implement your attack logic here, e.g., applying damage to the character
-  attack(character: Character, attackRange: number, damageAmount: number) {
-    if (
-      Phaser.Math.Distance.Between(this.x, this.y, character.x, character.y) <=
-      attackRange
-    ) {
-      character.takeDamage(damageAmount);
-    }
+  // Implement your attack logic here, e.g., applying damage to the player
+  attack(player: Player, damageAmount: number) {
+    player.takeDamage(damageAmount);
+    console.log('player hp:', player.hp);
   }
 
   takeDamage(damageAmount: number) {
@@ -88,17 +68,16 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         key: 'enemy_death',
         frames: scene.anims.generateFrameNumbers('enemy', {
           start: 121,
-          end: 131
+          end: 126
         }),
-        frameRate: 20,
-        repeat: -1 // Repeat indefinitely
+        frameRate: 20
       });
     }
 
     // Set the enemy's initial animation
     this.play('enemy_walk');
 
-    // Character properties
+    // Player properties
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setSize(60, 60);
   }

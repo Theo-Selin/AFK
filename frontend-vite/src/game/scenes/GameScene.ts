@@ -1,8 +1,8 @@
 import { CST } from '../CST';
 import Phaser from 'phaser';
-import { Character } from '../characters/Character';
+import { Player } from '../characters/Player';
 import { Enemy } from '../characters/Enemy';
-import type { Cursors } from '../characters/Character';
+import type { Cursors } from '../characters/Player';
 
 import forest1 from '@/assets/sprites/forest/forest1.png';
 import forest2 from '@/assets/sprites/forest/forest2.png';
@@ -16,7 +16,7 @@ import forest9 from '@/assets/sprites/forest/forest9.png';
 import forest10 from '@/assets/sprites/forest/forest10.png';
 import forest11 from '@/assets/sprites/forest/forest11.png';
 
-import character from '@/assets/sprites/characters/redhood.png';
+import player from '@/assets/sprites/characters/redhood.png';
 import enemy from '@/assets/sprites/characters/redhood.png';
 
 const AssetKeys = {
@@ -52,7 +52,7 @@ export class GameScene extends Phaser.Scene {
   private layer_10!: Phaser.GameObjects.TileSprite;
   private layer_11!: Phaser.GameObjects.TileSprite;
 
-  private character!: Character | null;
+  private player!: Player | null;
   private enemy!: Enemy | null;
 
   preload = () => {
@@ -68,7 +68,7 @@ export class GameScene extends Phaser.Scene {
     this.load.image(AssetKeys.LAYER_10, forest10);
     this.load.image(AssetKeys.LAYER_11, forest11);
 
-    this.load.spritesheet('character', character, {
+    this.load.spritesheet('player', player, {
       frameWidth: 112,
       frameHeight: 133
     });
@@ -165,8 +165,8 @@ export class GameScene extends Phaser.Scene {
     //WORLD //
     this.physics.world.setBounds(0, 0, width, height);
 
-    // PLAYER //
-    this.character = new Character(this, 200, 400);
+    // player //
+    this.player = new Player(this, 200, 400);
 
     // ENEMY //
     this.time.addEvent({
@@ -178,7 +178,7 @@ export class GameScene extends Phaser.Scene {
         this.enemy = new Enemy(this, 800, 400);
         this.enemy.enterFromOutside(4500);
         this.physics.add.collider(
-          this.character!,
+          this.player!,
           this.enemy,
           this.playerEnemyCollision, // Callback function when collision occurs
           undefined,
@@ -191,7 +191,7 @@ export class GameScene extends Phaser.Scene {
     // INTERACTION //
     this.physics.world.setBounds(0, 0, width, height);
 
-    // Enable collision between character and enemy
+    // Enable collision between player and enemy
 
     this.layer_11 = this.add.tileSprite(
       628 / 2,
@@ -208,8 +208,26 @@ export class GameScene extends Phaser.Scene {
   };
 
   playerEnemyCollision = () => {
-    this.character?.enterCombatState();
-    this.enemy?.enterCombatState();
+    this.player!.inCombat = true;
+    this.enemy!.inCombat = true;
+    this.player!.play('player_attack', true);
+    this.enemy!.play('enemy_attack', true);
+    this.player!.attack(this.enemy!, 5);
+    if (this.enemy!.hp <= 0) {
+      this.enemy!.play('enemy_death', true);
+      this.time.addEvent({
+        delay: 500,
+        callback: () => {
+          this.player!.inCombat = false;
+          this.enemy!.inCombat = false;
+          this.player!.play('player_walk', true);
+          this.enemy!.destroy();
+        },
+        loop: false
+      });
+    } else if (this.player!.hp <= 0) {
+      this.player!.destroy();
+    }
 
     this.layer_2.tilePositionX -= 0.05 * 2;
     this.layer_3.tilePositionX -= 0.1 * 2;
@@ -224,9 +242,6 @@ export class GameScene extends Phaser.Scene {
   };
 
   update = () => {
-    if (this.character?.inCombat) {
-      this.character.attack(this.enemy!, 100, 1);
-    }
     this.layer_2.tilePositionX += 0.05;
     this.layer_3.tilePositionX += 0.1;
     this.layer_4.tilePositionX += 0.15;

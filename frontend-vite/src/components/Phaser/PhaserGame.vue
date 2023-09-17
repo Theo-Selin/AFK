@@ -15,6 +15,7 @@ const config = {
   parent: 'phaser', // ID of the DOM element to add the canvas to
   width: 628,
   height: 493,
+  pixelArt: true,
   scene: GameScene,
   physics: {
     default: 'arcade', // Use Arcade Physics as the default
