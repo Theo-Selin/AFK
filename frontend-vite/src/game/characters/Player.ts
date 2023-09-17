@@ -19,7 +19,7 @@ export class Player extends Phaser.GameObjects.Sprite {
   // Implement your attack logic here, e.g., applying damage to the enemy
   attack(enemy: Enemy, damageAmount: number) {
     enemy.takeDamage(damageAmount);
-    console.log(enemy.hp);
+    console.log('enemy hp:', enemy.hp);
   }
 
   takeDamage(damageAmount: number) {
@@ -36,7 +36,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.setScale(2);
     this.flipX = true;
 
-    // Set up player animations
+    /*     // Set up player animations
     scene.anims.create({
       key: 'player_walk',
       frames: scene.anims.generateFrameNumbers('player', {
@@ -54,13 +54,13 @@ export class Player extends Phaser.GameObjects.Sprite {
         end: 120
       }),
       frameRate: 20
-    });
+    }); */
 
-    // Set the player's initial animation
-    this.play('player_walk');
+    /*     // Set the player's initial animation
+    this.play('player_walk'); */
 
     // player properties
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setSize(60, 60);
+    body.setSize(40, 40);
   }
 }

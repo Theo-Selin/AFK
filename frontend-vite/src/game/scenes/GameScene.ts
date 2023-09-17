@@ -82,6 +82,43 @@ export class GameScene extends Phaser.Scene {
   create = () => {
     const { width, height } = this.scale;
 
+    // Set up animations
+    if (!this.anims.exists('walk')) {
+      this.anims.create({
+        key: 'walk',
+        frames: this.anims.generateFrameNumbers('player', {
+          start: 1,
+          end: 24
+        }),
+        frameRate: 20,
+        repeat: -1 // Repeat indefinitely
+      });
+    }
+
+    if (!this.anims.exists('attack')) {
+      this.anims.create({
+        key: 'attack',
+        frames: this.anims.generateFrameNumbers('player', {
+          start: 56,
+          end: 120
+        }),
+        frameRate: 20,
+        repeat: -1 // Repeat indefinitely
+      });
+    }
+
+    if (!this.anims.exists('death')) {
+      this.anims.create({
+        key: 'death',
+        frames: this.anims.generateFrameNumbers('player', {
+          start: 121,
+          end: 127
+        }),
+        frameRate: 20,
+        repeat: -1
+      });
+    }
+
     this.layer_1 = this.add.tileSprite(
       628 / 2,
       493 / 2,
@@ -167,31 +204,30 @@ export class GameScene extends Phaser.Scene {
 
     // player //
     this.player = new Player(this, 200, 400);
+    this.player.play('walk', true);
 
     // ENEMY //
     this.time.addEvent({
       delay: 10000,
       callback: () => {
-        if (this.enemy) {
-          this.enemy.destroy();
-        }
-        this.enemy = new Enemy(this, 800, 400);
-        this.enemy.enterFromOutside(4500);
+        const enemy = new Enemy(this, 800, 400);
+        enemy.enterFromOutside(4500);
+        enemy.play('walk', true);
         this.physics.add.collider(
           this.player!,
-          this.enemy,
-          this.playerEnemyCollision, // Callback function when collision occurs
+          enemy,
+          (player, enemy) => {
+            this.playerEnemyCollision(player as Player, enemy as Enemy);
+          },
           undefined,
           this
         );
       },
       loop: true
-    }); // Add a timer event to spawn enemies
+    });
 
     // INTERACTION //
     this.physics.world.setBounds(0, 0, width, height);
-
-    // Enable collision between player and enemy
 
     this.layer_11 = this.add.tileSprite(
       628 / 2,
@@ -202,31 +238,26 @@ export class GameScene extends Phaser.Scene {
     );
   };
 
-  spawnEnemy = (scene: Phaser.Scene, x: number, y: number) => {
-    this.enemy! = new Enemy(scene, x, y);
-    this.enemy.enterFromOutside(4500);
-  };
-
-  playerEnemyCollision = () => {
-    this.player!.inCombat = true;
-    this.enemy!.inCombat = true;
-    this.player!.play('player_attack', true);
-    this.enemy!.play('enemy_attack', true);
-    this.player!.attack(this.enemy!, 5);
-    if (this.enemy!.hp <= 0) {
-      this.enemy!.play('enemy_death', true);
+  playerEnemyCollision = (player: Player, enemy: Enemy) => {
+    player.inCombat = true;
+    enemy.inCombat = true;
+    player.play('attack', true);
+    enemy.play('attack', true);
+    player.attack(enemy, 1);
+    enemy.attack(player, 1);
+    if (enemy.hp <= 0) {
+      enemy.play('death', true);
       this.time.addEvent({
         delay: 500,
         callback: () => {
-          this.player!.inCombat = false;
-          this.enemy!.inCombat = false;
-          this.player!.play('player_walk', true);
-          this.enemy!.destroy();
+          player.inCombat = false;
+          player.play('walk', true);
+          enemy.destroy();
         },
         loop: false
       });
-    } else if (this.player!.hp <= 0) {
-      this.player!.destroy();
+    } else if (player.hp <= 0) {
+      player.destroy();
     }
 
     this.layer_2.tilePositionX -= 0.05 * 2;

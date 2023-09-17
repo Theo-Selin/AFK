@@ -15,6 +15,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   takeDamage(damageAmount: number) {
     this.hp -= damageAmount;
   }
+
   enterFromOutside(duration: number) {
     // Create a tween to move the enemy onto the screen
     const tween = this.scene.tweens.add({
@@ -38,13 +39,13 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     this.setScale(2);
     this.flipX = false;
 
-    // Set up enemy animations
+    /*     // Set up enemy animations
     if (!scene.anims.exists('enemy_walk')) {
       scene.anims.create({
         key: 'enemy_walk',
         frames: scene.anims.generateFrameNumbers('enemy', {
-          start: 0,
-          end: 0
+          start: 1,
+          end: 24
         }),
         frameRate: 20,
         repeat: -1 // Repeat indefinitely
@@ -75,10 +76,10 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     // Set the enemy's initial animation
-    this.play('enemy_walk');
+    this.play('enemy_walk'); */
 
     // Player properties
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setSize(60, 60);
+    body.setSize(40, 40);
   }
 }
