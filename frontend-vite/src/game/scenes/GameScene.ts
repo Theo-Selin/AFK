@@ -239,37 +239,17 @@ export class GameScene extends Phaser.Scene {
   };
 
   playerEnemyCollision = (player: Player, enemy: Enemy) => {
-    player.inCombat = true;
-    enemy.inCombat = true;
-    player.play('attack', true);
-    enemy.play('attack', true);
-    player.attack(enemy, 1);
-    enemy.attack(player, 1);
-    if (enemy.hp <= 0) {
-      enemy.play('death', true);
-      this.time.addEvent({
-        delay: 500,
-        callback: () => {
-          player.inCombat = false;
-          player.play('walk', true);
-          enemy.destroy();
-        },
-        loop: false
-      });
-    } else if (player.hp <= 0) {
-      player.destroy();
-    }
+    const timings = [350, 350, 650, 650, 825, 450];
 
-    this.layer_2.tilePositionX -= 0.05 * 2;
-    this.layer_3.tilePositionX -= 0.1 * 2;
-    this.layer_4.tilePositionX -= 0.15 * 2;
-    this.layer_5.tilePositionX -= 0.2 * 2;
-    this.layer_6.tilePositionX -= 0.25 * 2;
-    this.layer_7.tilePositionX -= 0.3 * 2;
-    this.layer_8.tilePositionX -= 0.35 * 2;
-    this.layer_9.tilePositionX -= 0.4 * 2;
-    this.layer_10.tilePositionX -= 0.45 * 2;
-    this.layer_11.tilePositionX -= 1 * 2;
+    if (enemy.hp > 0) {
+      player.inCombat = true;
+      enemy.inCombat = true;
+      player.play('attack', true);
+      enemy.play('attack', true);
+      player.attack(enemy, timings, 0);
+      enemy.attack(player, 1);
+      enemy.enableBody(false);
+    }
   };
 
   update = () => {

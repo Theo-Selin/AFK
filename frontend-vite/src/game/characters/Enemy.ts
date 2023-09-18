@@ -9,7 +9,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   // Implement your attack logic here, e.g., applying damage to the player
   attack(player: Player, damageAmount: number) {
     player.takeDamage(damageAmount);
-    console.log('player hp:', player.hp);
+    /*     console.log('player hp:', player.hp);
+     */
   }
 
   takeDamage(damageAmount: number) {
@@ -27,6 +28,11 @@ export class Enemy extends Phaser.GameObjects.Sprite {
         tween.remove();
       }
     });
+  }
+
+  enableBody(enabled: boolean) {
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    body.enable = enabled;
   }
 
   constructor(scene: Phaser.Scene, x: number, y: number) {

@@ -16,10 +16,47 @@ export class Player extends Phaser.GameObjects.Sprite {
   hp: number = 10000;
   attackRange: number = 100;
 
-  // Implement your attack logic here, e.g., applying damage to the enemy
-  attack(enemy: Enemy, damageAmount: number) {
+  damage(enemy: Enemy, damageAmount: number) {
     enemy.takeDamage(damageAmount);
     console.log('enemy hp:', enemy.hp);
+  }
+
+  attack(enemy: Enemy, attackTimings: number[], delay: number) {
+    const triggerAttackSequence = (sequenceIndex: number) => {
+      if (sequenceIndex < attackTimings.length) {
+        const timing = attackTimings[sequenceIndex];
+        this.damage(enemy, 50); // Replace 1 with your damage amount // Replace 100 with your shake intensity and 0.01 with your shake duration
+
+        // Set up the timer for the next attack in the sequence
+        this.scene.time.addEvent({
+          delay: timing,
+          callback: () => {
+            triggerAttackSequence(sequenceIndex + 1);
+          },
+          loop: false
+        });
+      } else {
+        // The sequence has finished; wait for the delay before starting the next sequence
+        if (enemy.hp > 0) {
+          this.scene.time.delayedCall(delay, () => {
+            triggerAttackSequence(0); // Start the next sequence
+          });
+        } else {
+          enemy.play('death', true);
+          this.scene.time.addEvent({
+            delay: 200,
+            callback: () => {
+              this.inCombat = false;
+              this.play('walk', true);
+              enemy.destroy();
+            },
+            loop: false
+          });
+        }
+      }
+    };
+    // Start the first attack sequence
+    triggerAttackSequence(0);
   }
 
   takeDamage(damageAmount: number) {
