@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
 import Phaser from 'phaser';
-import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { GameScene } from '../../game/scenes/GameScene';
 
@@ -27,15 +26,6 @@ const config = {
   },
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
-  },
-  plugins: {
-    global: [
-      {
-        key: 'rexUI',
-        plugin: RexUIPlugin,
-        start: true
-      }
-    ]
   }
 };
 

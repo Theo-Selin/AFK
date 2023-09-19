@@ -21,11 +21,26 @@ export class Player extends Phaser.GameObjects.Sprite {
     console.log('enemy hp:', enemy.hp);
   }
 
-  attack(enemy: Enemy, attackTimings: number[], delay: number) {
+  attack(
+    enemy: Enemy,
+    attackTimings: number[],
+    delay: number,
+    critChance: number
+  ) {
     const triggerAttackSequence = (sequenceIndex: number) => {
       if (sequenceIndex < attackTimings.length) {
         const timing = attackTimings[sequenceIndex];
-        this.damage(enemy, 50); // Replace 1 with your damage amount // Replace 100 with your shake intensity and 0.01 with your shake duration
+
+        // Generate a random number between 0 and 1
+        const randomValue = Math.random();
+
+        // Check if the random number is below the critChance threshold
+        if (randomValue < critChance) {
+          this.screenShake();
+          this.damage(enemy, 50 * 2); // Replace 1 with your damage amount
+        } else {
+          this.damage(enemy, 50); // Replace 1 with your damage amount
+        }
 
         // Set up the timer for the next attack in the sequence
         this.scene.time.addEvent({
@@ -61,6 +76,35 @@ export class Player extends Phaser.GameObjects.Sprite {
 
   takeDamage(damageAmount: number) {
     this.hp -= damageAmount;
+  }
+
+  // Function to shake the camera
+  screenShake() {
+    const duration = 50; // Duration of the shake in milliseconds
+    const intensity = 10; // Intensity of the shake (pixels)
+
+    const initialCameraPosition = {
+      x: this.scene.cameras.main.scrollX,
+      y: this.scene.cameras.main.scrollY
+    };
+
+    this.scene.tweens.add({
+      targets: this.scene.cameras.main,
+      props: {
+        scrollX: {
+          value:
+            initialCameraPosition.x +
+            Phaser.Math.RND.integerInRange(-intensity, intensity)
+        },
+        scrollY: {
+          value:
+            initialCameraPosition.y +
+            Phaser.Math.RND.integerInRange(-intensity, intensity)
+        }
+      },
+      duration,
+      yoyo: true
+    });
   }
 
   constructor(scene: Phaser.Scene, x: number, y: number) {

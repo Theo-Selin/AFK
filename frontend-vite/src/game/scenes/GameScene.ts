@@ -246,7 +246,7 @@ export class GameScene extends Phaser.Scene {
       enemy.inCombat = true;
       player.play('attack', true);
       enemy.play('attack', true);
-      player.attack(enemy, timings, 0);
+      player.attack(enemy, timings, 0, 0.1);
       enemy.attack(player, 1);
       enemy.enableBody(false);
     }
