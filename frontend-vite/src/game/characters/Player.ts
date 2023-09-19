@@ -36,7 +36,7 @@ export class Player extends Phaser.GameObjects.Sprite {
 
         // Check if the random number is below the critChance threshold
         if (randomValue < critChance) {
-          this.screenShake();
+          this.screenShake(0.05, 50);
           this.damage(enemy, 50 * 2); // Replace 1 with your damage amount
         } else {
           this.damage(enemy, 50); // Replace 1 with your damage amount
@@ -79,31 +79,22 @@ export class Player extends Phaser.GameObjects.Sprite {
   }
 
   // Function to shake the camera
-  screenShake() {
-    const duration = 50; // Duration of the shake in milliseconds
-    const intensity = 10; // Intensity of the shake (pixels)
+  screenShake(intensity: number, duration: number) {
+    // Calculate the initial camera position
+    const initialShake = this.scene.cameras.main.zoom;
 
-    const initialCameraPosition = {
-      x: this.scene.cameras.main.scrollX,
-      y: this.scene.cameras.main.scrollY
-    };
-
+    // Create a tween to animate the camera shake
     this.scene.tweens.add({
       targets: this.scene.cameras.main,
-      props: {
-        scrollX: {
-          value:
-            initialCameraPosition.x +
-            Phaser.Math.RND.integerInRange(-intensity, intensity)
-        },
-        scrollY: {
-          value:
-            initialCameraPosition.y +
-            Phaser.Math.RND.integerInRange(-intensity, intensity)
-        }
-      },
-      duration,
-      yoyo: true
+      zoom: initialShake + intensity,
+      ease: 'Linear',
+      duration: duration,
+      yoyo: true,
+      repeat: 0,
+      onComplete: () => {
+        // Reset the camera to its initial position
+        this.scene.cameras.main.setZoom(initialShake);
+      }
     });
   }
 
