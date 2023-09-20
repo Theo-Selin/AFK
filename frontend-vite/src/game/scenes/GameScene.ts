@@ -16,6 +16,19 @@ import forest9 from '@/assets/sprites/forest/forest9.png';
 import forest10 from '@/assets/sprites/forest/forest10.png';
 import forest11 from '@/assets/sprites/forest/forest11.png';
 
+import hit1 from '@/assets/sounds/sword/sword_clash.1.ogg';
+import hit2 from '@/assets/sounds/sword/sword_clash.2.ogg';
+import hit3 from '@/assets/sounds/sword/sword_clash.3.ogg';
+import hit4 from '@/assets/sounds/sword/sword_clash.4.ogg';
+import hit5 from '@/assets/sounds/sword/sword_clash.5.ogg';
+import hit6 from '@/assets/sounds/sword/sword_clash.6.ogg';
+import hit7 from '@/assets/sounds/sword/sword_clash.7.ogg';
+import hit8 from '@/assets/sounds/sword/sword_clash.8.ogg';
+import hit9 from '@/assets/sounds/sword/sword_clash.9.ogg';
+import hit10 from '@/assets/sounds/sword/sword_clash.10.ogg';
+
+import crit1 from '@/assets/sounds/hits/hit19.mp3';
+
 import player from '@/assets/sprites/characters/redhood.png';
 import enemy from '@/assets/sprites/characters/redhood.png';
 
@@ -30,7 +43,18 @@ const AssetKeys = {
   LAYER_4: 'layer_4',
   LAYER_3: 'layer_3',
   LAYER_2: 'layer_2',
-  LAYER_1: 'layer_1'
+  LAYER_1: 'layer_1',
+  HIT_1: 'hit1',
+  HIT_2: 'hit2',
+  HIT_3: 'hit3',
+  HIT_4: 'hit4',
+  HIT_5: 'hit5',
+  HIT_6: 'hit6',
+  HIT_7: 'hit7',
+  HIT_8: 'hit8',
+  HIT_9: 'hit9',
+  HIT_10: 'hit10',
+  CRIT_1: 'crit1'
 };
 
 export class GameScene extends Phaser.Scene {
@@ -52,6 +76,20 @@ export class GameScene extends Phaser.Scene {
   private layer_10!: Phaser.GameObjects.TileSprite;
   private layer_11!: Phaser.GameObjects.TileSprite;
 
+  private hit_1!: Phaser.Sound.BaseSound;
+  private hit_2!: Phaser.Sound.BaseSound;
+  private hit_3!: Phaser.Sound.BaseSound;
+  private hit_4!: Phaser.Sound.BaseSound;
+  private hit_5!: Phaser.Sound.BaseSound;
+  private hit_6!: Phaser.Sound.BaseSound;
+  private hit_7!: Phaser.Sound.BaseSound;
+  private hit_8!: Phaser.Sound.BaseSound;
+  private hit_9!: Phaser.Sound.BaseSound;
+  private hit_10!: Phaser.Sound.BaseSound;
+  private hit_11!: Phaser.Sound.BaseSound;
+
+  private crit_1!: Phaser.Sound.BaseSound;
+
   private player!: Player | null;
   private enemy!: Enemy | null;
 
@@ -68,6 +106,19 @@ export class GameScene extends Phaser.Scene {
     this.load.image(AssetKeys.LAYER_10, forest10);
     this.load.image(AssetKeys.LAYER_11, forest11);
 
+    this.load.audio(AssetKeys.HIT_1, hit1);
+    this.load.audio(AssetKeys.HIT_2, hit2);
+    this.load.audio(AssetKeys.HIT_3, hit3);
+    this.load.audio(AssetKeys.HIT_4, hit4);
+    this.load.audio(AssetKeys.HIT_5, hit5);
+    this.load.audio(AssetKeys.HIT_6, hit6);
+    this.load.audio(AssetKeys.HIT_7, hit7);
+    this.load.audio(AssetKeys.HIT_8, hit8);
+    this.load.audio(AssetKeys.HIT_9, hit9);
+    this.load.audio(AssetKeys.HIT_10, hit10);
+
+    this.load.audio(AssetKeys.CRIT_1, crit1);
+
     this.load.spritesheet('player', player, {
       frameWidth: 112,
       frameHeight: 133
@@ -81,6 +132,27 @@ export class GameScene extends Phaser.Scene {
 
   create = () => {
     const { width, height } = this.scale;
+
+    // Create the mute button
+    const muteButton = this.add
+      .text(200, 200, 'Mute', {
+        color: '#ffffff',
+        fontSize: '20px'
+      })
+      .setInteractive();
+    muteButton.setDepth(1);
+
+    // Toggle mute functionality
+    const toggleMute = () => {
+      this.sound.mute = !this.sound.mute; // Toggle mute property
+      muteButton.setText(this.sound.mute ? 'Unmute' : 'Mute');
+    };
+
+    // Add click event to the mute button
+    muteButton.on('pointerdown', () => {
+      // Ensure audio-related actions are triggered by user interaction
+      toggleMute();
+    });
 
     // Set up animations
     if (!this.anims.exists('walk')) {
@@ -253,15 +325,17 @@ export class GameScene extends Phaser.Scene {
   };
 
   update = () => {
-    this.layer_2.tilePositionX += 0.05;
-    this.layer_3.tilePositionX += 0.1;
-    this.layer_4.tilePositionX += 0.15;
-    this.layer_5.tilePositionX += 0.2;
-    this.layer_6.tilePositionX += 0.25;
-    this.layer_7.tilePositionX += 0.3;
-    this.layer_8.tilePositionX += 0.35;
-    this.layer_9.tilePositionX += 0.4;
-    this.layer_10.tilePositionX += 0.45;
-    this.layer_11.tilePositionX += 1;
+    if (!this.player?.inCombat) {
+      this.layer_2.tilePositionX += 0.05;
+      this.layer_3.tilePositionX += 0.1;
+      this.layer_4.tilePositionX += 0.15;
+      this.layer_5.tilePositionX += 0.2;
+      this.layer_6.tilePositionX += 0.25;
+      this.layer_7.tilePositionX += 0.3;
+      this.layer_8.tilePositionX += 0.35;
+      this.layer_9.tilePositionX += 0.4;
+      this.layer_10.tilePositionX += 0.45;
+      this.layer_11.tilePositionX += 1;
+    }
   };
 }

@@ -27,18 +27,48 @@ export class Player extends Phaser.GameObjects.Sprite {
     delay: number,
     critChance: number
   ) {
+    const hitSounds = [
+      'hit1',
+      'hit2',
+      'hit3',
+      'hit4',
+      'hit5',
+      'hit6',
+      'hit7',
+      'hit8',
+      'hit9',
+      'hit10'
+    ];
+
+    const critSounds = ['crit1'];
+
     const triggerAttackSequence = (sequenceIndex: number) => {
       if (sequenceIndex < attackTimings.length) {
         const timing = attackTimings[sequenceIndex];
+        const randomHitSoundKey = Phaser.Utils.Array.GetRandom(hitSounds);
+        const randomHitSound = this.scene.sound.add(randomHitSoundKey);
+        const randomCritSoundKey = Phaser.Utils.Array.GetRandom(critSounds);
+        const randomCritSound = this.scene.sound.add(randomCritSoundKey);
+        randomHitSound.setVolume(0.1);
+        randomCritSound.setVolume(0.1);
 
         // Generate a random number between 0 and 1
         const randomValue = Math.random();
 
         // Check if the random number is below the critChance threshold
         if (randomValue < critChance) {
+          if (randomCritSound.isPlaying) {
+            randomCritSound.destroy();
+          }
           this.screenShake(0.05, 50);
+          this.screenFlash(500);
+          randomCritSound.play();
           this.damage(enemy, 50 * 2); // Replace 1 with your damage amount
         } else {
+          if (randomHitSound.isPlaying) {
+            randomHitSound.destroy();
+          }
+          randomHitSound.play();
           this.damage(enemy, 50); // Replace 1 with your damage amount
         }
 
@@ -87,6 +117,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.scene.tweens.add({
       targets: this.scene.cameras.main,
       zoom: initialShake + intensity,
+
       ease: 'Linear',
       duration: duration,
       yoyo: true,
@@ -94,6 +125,39 @@ export class Player extends Phaser.GameObjects.Sprite {
       onComplete: () => {
         // Reset the camera to its initial position
         this.scene.cameras.main.setZoom(initialShake);
+      }
+    });
+  }
+
+  // Function to create a screen flash
+  screenFlash(duration: number) {
+    // Create a graphics object to draw the screen flash
+    const graphics = this.scene.add.graphics();
+
+    // Set the fill color and alpha (transparency) for the flash
+    const flashColor = 0xffffff; // White
+    const flashAlpha = 0.5; // Adjust this value for the desired transparency
+
+    // Draw a rectangle covering the entire screen
+    graphics.fillStyle(flashColor, flashAlpha);
+    graphics.fillRect(
+      0,
+      0,
+      this.scene.cameras.main.width,
+      this.scene.cameras.main.height
+    );
+
+    // Add a tween to fade out the flash
+    this.scene.tweens.add({
+      targets: graphics,
+      alpha: 0,
+      ease: 'Linear',
+      duration: duration,
+      yoyo: false,
+      repeat: 0,
+      onComplete: () => {
+        // Destroy the graphics object when the tween is complete
+        graphics.destroy();
       }
     });
   }
