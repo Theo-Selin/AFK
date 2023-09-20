@@ -27,19 +27,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     delay: number,
     critChance: number
   ) {
-    const hitSounds = [
-      'hit1',
-      'hit2',
-      'hit3',
-      'hit4',
-      'hit5',
-      'hit6',
-      'hit7',
-      'hit8',
-      'hit9',
-      'hit10'
-    ];
-
+    const hitSounds = ['hit1'];
     const critSounds = ['crit1'];
 
     const triggerAttackSequence = (sequenceIndex: number) => {
@@ -49,8 +37,8 @@ export class Player extends Phaser.GameObjects.Sprite {
         const randomHitSound = this.scene.sound.add(randomHitSoundKey);
         const randomCritSoundKey = Phaser.Utils.Array.GetRandom(critSounds);
         const randomCritSound = this.scene.sound.add(randomCritSoundKey);
-        randomHitSound.setVolume(0.1);
-        randomCritSound.setVolume(0.1);
+        randomHitSound.setVolume(0.05);
+        randomCritSound.setVolume(0.05);
 
         // Generate a random number between 0 and 1
         const randomValue = Math.random();

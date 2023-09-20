@@ -16,16 +16,7 @@ import forest9 from '@/assets/sprites/forest/forest9.png';
 import forest10 from '@/assets/sprites/forest/forest10.png';
 import forest11 from '@/assets/sprites/forest/forest11.png';
 
-import hit1 from '@/assets/sounds/sword/sword_clash.1.ogg';
-import hit2 from '@/assets/sounds/sword/sword_clash.2.ogg';
-import hit3 from '@/assets/sounds/sword/sword_clash.3.ogg';
-import hit4 from '@/assets/sounds/sword/sword_clash.4.ogg';
-import hit5 from '@/assets/sounds/sword/sword_clash.5.ogg';
-import hit6 from '@/assets/sounds/sword/sword_clash.6.ogg';
-import hit7 from '@/assets/sounds/sword/sword_clash.7.ogg';
-import hit8 from '@/assets/sounds/sword/sword_clash.8.ogg';
-import hit9 from '@/assets/sounds/sword/sword_clash.9.ogg';
-import hit10 from '@/assets/sounds/sword/sword_clash.10.ogg';
+import hit1 from '@/assets/sounds/hits/hit10.mp3';
 
 import crit1 from '@/assets/sounds/hits/hit19.mp3';
 
@@ -45,15 +36,6 @@ const AssetKeys = {
   LAYER_2: 'layer_2',
   LAYER_1: 'layer_1',
   HIT_1: 'hit1',
-  HIT_2: 'hit2',
-  HIT_3: 'hit3',
-  HIT_4: 'hit4',
-  HIT_5: 'hit5',
-  HIT_6: 'hit6',
-  HIT_7: 'hit7',
-  HIT_8: 'hit8',
-  HIT_9: 'hit9',
-  HIT_10: 'hit10',
   CRIT_1: 'crit1'
 };
 
@@ -89,6 +71,7 @@ export class GameScene extends Phaser.Scene {
   private hit_11!: Phaser.Sound.BaseSound;
 
   private crit_1!: Phaser.Sound.BaseSound;
+  private crit_2!: Phaser.Sound.BaseSound;
 
   private player!: Player | null;
   private enemy!: Enemy | null;
@@ -107,15 +90,6 @@ export class GameScene extends Phaser.Scene {
     this.load.image(AssetKeys.LAYER_11, forest11);
 
     this.load.audio(AssetKeys.HIT_1, hit1);
-    this.load.audio(AssetKeys.HIT_2, hit2);
-    this.load.audio(AssetKeys.HIT_3, hit3);
-    this.load.audio(AssetKeys.HIT_4, hit4);
-    this.load.audio(AssetKeys.HIT_5, hit5);
-    this.load.audio(AssetKeys.HIT_6, hit6);
-    this.load.audio(AssetKeys.HIT_7, hit7);
-    this.load.audio(AssetKeys.HIT_8, hit8);
-    this.load.audio(AssetKeys.HIT_9, hit9);
-    this.load.audio(AssetKeys.HIT_10, hit10);
 
     this.load.audio(AssetKeys.CRIT_1, crit1);
 
@@ -135,9 +109,9 @@ export class GameScene extends Phaser.Scene {
 
     // Create the mute button
     const muteButton = this.add
-      .text(200, 200, 'Mute', {
+      .text(580, 20, 'ON', {
         color: '#ffffff',
-        fontSize: '20px'
+        fontSize: '15px'
       })
       .setInteractive();
     muteButton.setDepth(1);
@@ -145,7 +119,7 @@ export class GameScene extends Phaser.Scene {
     // Toggle mute functionality
     const toggleMute = () => {
       this.sound.mute = !this.sound.mute; // Toggle mute property
-      muteButton.setText(this.sound.mute ? 'Unmute' : 'Mute');
+      muteButton.setText(this.sound.mute ? 'OFF' : 'ON');
     };
 
     // Add click event to the mute button
