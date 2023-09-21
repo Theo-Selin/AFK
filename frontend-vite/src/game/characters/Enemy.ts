@@ -17,6 +17,35 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     this.hp -= damageAmount;
   }
 
+  combatBounce(distance: number, duration: number) {
+    const flash = this.scene.add.graphics();
+    flash.fillStyle(0xffffff, 1); // White color with full alpha
+
+    // Create a tween to gradually fade out the white flash
+    this.scene.tweens.add({
+      targets: flash,
+      alpha: 0, // Fade out
+      duration: duration,
+      onComplete: () => {
+        flash.destroy(); // Remove the Graphics object
+      }
+    });
+
+    // Create a tween for the bounce effect
+    this.scene.tweens.add({
+      targets: this,
+      x: this.x + distance, // Move the sprite up
+      duration: duration / 2,
+      ease: 'Linear',
+      yoyo: true, // Play the tween in reverse
+      onComplete: () => {
+        // Ensure the sprite is back to its original position
+        this.x = 250;
+        this.clearTint();
+      }
+    });
+  }
+
   enterFromOutside(duration: number) {
     // Create a tween to move the enemy onto the screen
     const tween = this.scene.tweens.add({
@@ -86,6 +115,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 
     // Player properties
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setSize(40, 40);
+    body.setSize(20, 20);
   }
 }

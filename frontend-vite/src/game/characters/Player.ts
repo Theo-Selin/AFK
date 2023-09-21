@@ -50,6 +50,7 @@ export class Player extends Phaser.GameObjects.Sprite {
           }
           this.screenShake(0.05, 50);
           this.screenFlash(500);
+          enemy.combatBounce(100, 350);
           randomCritSound.play();
           this.damage(enemy, 50 * 2); // Replace 1 with your damage amount
         } else {
@@ -57,6 +58,7 @@ export class Player extends Phaser.GameObjects.Sprite {
             randomHitSound.destroy();
           }
           randomHitSound.play();
+          enemy.combatBounce(50, 350);
           this.damage(enemy, 50); // Replace 1 with your damage amount
         }
 
@@ -150,6 +152,21 @@ export class Player extends Phaser.GameObjects.Sprite {
     });
   }
 
+  combatBounce(distance: number, duration: number) {
+    // Create a tween for the bounce effect
+    this.scene.tweens.add({
+      targets: this,
+      x: this.x - distance, // Move the sprite up
+      duration: duration / 2,
+      ease: 'Linear',
+      yoyo: true, // Play the tween in reverse
+      onComplete: () => {
+        // Ensure the sprite is back to its original position
+        this.x = 200;
+      }
+    });
+  }
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'player');
 
@@ -159,29 +176,6 @@ export class Player extends Phaser.GameObjects.Sprite {
 
     this.setScale(2);
     this.flipX = true;
-
-    /*     // Set up player animations
-    scene.anims.create({
-      key: 'player_walk',
-      frames: scene.anims.generateFrameNumbers('player', {
-        start: 1,
-        end: 24
-      }),
-      frameRate: 20,
-      repeat: -1 // Repeat indefinitely
-    });
-
-    scene.anims.create({
-      key: 'player_attack',
-      frames: scene.anims.generateFrameNumbers('player', {
-        start: 56,
-        end: 120
-      }),
-      frameRate: 20
-    }); */
-
-    /*     // Set the player's initial animation
-    this.play('player_walk'); */
 
     // player properties
     const body = this.body as Phaser.Physics.Arcade.Body;
