@@ -107,6 +107,10 @@ export class GameScene extends Phaser.Scene {
   create = () => {
     const { width, height } = this.scale;
 
+    // Listen for the window focus and blur events
+    window.addEventListener('focus', this.onFocus.bind(this));
+    window.addEventListener('blur', this.onBlur.bind(this));
+
     // Create the mute button
     const muteButton = this.add
       .text(580, 20, 'ON', {
@@ -297,6 +301,18 @@ export class GameScene extends Phaser.Scene {
       enemy.enableBody(false);
     }
   };
+
+  onFocus() {
+    if (this.sound) {
+      this.sound.resumeAll();
+    }
+  }
+
+  onBlur() {
+    if (this.sound) {
+      this.sound.pauseAll();
+    }
+  }
 
   update = () => {
     if (!this.player?.inCombat) {

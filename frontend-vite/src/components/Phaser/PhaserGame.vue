@@ -16,7 +16,7 @@ const config = {
   width: 628,
   height: 493,
   pixelArt: true,
-  scene: GameScene,
+  scene: [GameScene],
   physics: {
     default: 'arcade', // Use Arcade Physics as the default
     arcade: {
@@ -26,6 +26,9 @@ const config = {
   },
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+  },
+  audio: {
+    disableWebAudio: true // Disable Web Audio API
   }
 };
 
