@@ -58,7 +58,7 @@ export class Player extends Phaser.GameObjects.Sprite {
             randomHitSound.destroy();
           }
           randomHitSound.play();
-          enemy.combatBounce(50, 350);
+          enemy.combatBounce(25, 350);
           this.damage(enemy, 50); // Replace 1 with your damage amount
         }
 

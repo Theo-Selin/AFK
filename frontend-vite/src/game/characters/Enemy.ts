@@ -18,16 +18,14 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   }
 
   combatBounce(distance: number, duration: number) {
-    const flash = this.scene.add.graphics();
-    flash.fillStyle(0xffffff, 1); // White color with full alpha
-
-    // Create a tween to gradually fade out the white flash
+    // Set the sprite's tint to white
+    this.setTintFill(0xffffff);
     this.scene.tweens.add({
-      targets: flash,
-      alpha: 0, // Fade out
-      duration: duration,
+      targets: this,
+      fill: 0xffffff,
+      duration: duration / 4,
       onComplete: () => {
-        flash.destroy(); // Remove the Graphics object
+        this.clearTint();
       }
     });
 
@@ -41,7 +39,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
       onComplete: () => {
         // Ensure the sprite is back to its original position
         this.x = 250;
-        this.clearTint();
       }
     });
   }
