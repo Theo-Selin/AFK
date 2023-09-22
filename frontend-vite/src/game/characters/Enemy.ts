@@ -6,11 +6,27 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   hp: number = 410;
   attackRange: number = 100;
 
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    super(scene, x, y, 'enemy');
+
+    // Add the enemy to the scene
+    scene.add.existing(this);
+    scene.physics.world.enable(this);
+
+    this.setScale(2);
+    this.flipX = false;
+
+    // Set the enemy's initial animation
+    this.play('walk');
+
+    // Player properties
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    body.setSize(20, 20);
+  }
+
   // Implement your attack logic here, e.g., applying damage to the player
   attack(player: Player, damageAmount: number) {
     player.takeDamage(damageAmount);
-    /*     console.log('player hp:', player.hp);
-     */
   }
 
   takeDamage(damageAmount: number) {
@@ -59,59 +75,5 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   enableBody(enabled: boolean) {
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.enable = enabled;
-  }
-
-  constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'enemy');
-
-    // Add the enemy to the scene
-    scene.add.existing(this);
-    scene.physics.world.enable(this);
-
-    this.setScale(2);
-    this.flipX = false;
-
-    /*     // Set up enemy animations
-    if (!scene.anims.exists('enemy_walk')) {
-      scene.anims.create({
-        key: 'enemy_walk',
-        frames: scene.anims.generateFrameNumbers('enemy', {
-          start: 1,
-          end: 24
-        }),
-        frameRate: 20,
-        repeat: -1 // Repeat indefinitely
-      });
-    }
-
-    if (!scene.anims.exists('enemy_attack')) {
-      scene.anims.create({
-        key: 'enemy_attack',
-        frames: scene.anims.generateFrameNumbers('enemy', {
-          start: 56,
-          end: 120
-        }),
-        frameRate: 10,
-        repeat: -1 // Repeat indefinitely
-      });
-    }
-
-    if (!scene.anims.exists('enemy_death')) {
-      scene.anims.create({
-        key: 'enemy_death',
-        frames: scene.anims.generateFrameNumbers('enemy', {
-          start: 121,
-          end: 126
-        }),
-        frameRate: 20
-      });
-    }
-
-    // Set the enemy's initial animation
-    this.play('enemy_walk'); */
-
-    // Player properties
-    const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setSize(20, 20);
   }
 }

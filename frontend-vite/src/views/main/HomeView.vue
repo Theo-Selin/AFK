@@ -1,7 +1,15 @@
 <template>
   <div class="home-wrapper">
-    <div class="game-container">
+    <div class="home-wrapper__content">
+      <div class="home-wrapper__content-left">
+        <h1>Home</h1>
+        <button @click="logout">Logout</button>
+      </div>
       <phaser-game />
+      <div class="home-wrapper__content-right">
+        <h1>Home</h1>
+        <button @click="logout">Logout</button>
+      </div>
     </div>
   </div>
 </template>

@@ -3,18 +3,3 @@
   border-radius: 8px;
   overflow: hidden;
 }
-
-#phaser::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 628px;
-  height: 493px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /*   background-image: url("@/game/assets/borders/border-silver.png");
-  background-size: cover; */
-}

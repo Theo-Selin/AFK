@@ -2,15 +2,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
   padding: 64px;
-  @apply bg-gray-900;
+  @apply bg-gradient-to-t from-gray-900 to-gray-800;
 
-  .game-container {
+  &__content {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border-radius: 10px;
-    @apply bg-gray-900 shadow-sky-900 shadow-inner;
+    padding: 48px;
+    width: 1280px;
+    @apply bg-gray-900 shadow-2xl rounded-xl;
+
+    &-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }

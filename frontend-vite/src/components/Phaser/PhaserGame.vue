@@ -13,7 +13,7 @@ const config = {
   type: Phaser.AUTO,
   backgroundColor: '#111111',
   parent: 'phaser', // ID of the DOM element to add the canvas to
-  width: 628,
+  width: 1000,
   height: 493,
   pixelArt: true,
   scene: [GameScene],

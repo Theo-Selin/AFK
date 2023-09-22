@@ -41,6 +41,7 @@ const AssetKeys = {
 
 export class GameScene extends Phaser.Scene {
   cursors!: Cursors;
+  screen_width!: number;
 
   constructor() {
     super({ key: CST.SCENES.GAME });
@@ -59,19 +60,8 @@ export class GameScene extends Phaser.Scene {
   private layer_11!: Phaser.GameObjects.TileSprite;
 
   private hit_1!: Phaser.Sound.BaseSound;
-  private hit_2!: Phaser.Sound.BaseSound;
-  private hit_3!: Phaser.Sound.BaseSound;
-  private hit_4!: Phaser.Sound.BaseSound;
-  private hit_5!: Phaser.Sound.BaseSound;
-  private hit_6!: Phaser.Sound.BaseSound;
-  private hit_7!: Phaser.Sound.BaseSound;
-  private hit_8!: Phaser.Sound.BaseSound;
-  private hit_9!: Phaser.Sound.BaseSound;
-  private hit_10!: Phaser.Sound.BaseSound;
-  private hit_11!: Phaser.Sound.BaseSound;
 
   private crit_1!: Phaser.Sound.BaseSound;
-  private crit_2!: Phaser.Sound.BaseSound;
 
   private player!: Player | null;
   private enemy!: Enemy | null;
@@ -106,6 +96,7 @@ export class GameScene extends Phaser.Scene {
 
   create = () => {
     const { width, height } = this.scale;
+    this.screen_width = width;
 
     // Listen for the window focus and blur events
     window.addEventListener('focus', this.onFocus.bind(this));
@@ -170,7 +161,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.layer_1 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -178,7 +169,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_2 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -186,7 +177,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_3 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -194,7 +185,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_4 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -202,7 +193,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_5 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -210,7 +201,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_6 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -218,7 +209,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_7 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -226,7 +217,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_8 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -234,7 +225,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_9 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -242,7 +233,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.layer_10 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,
@@ -260,8 +251,8 @@ export class GameScene extends Phaser.Scene {
     this.time.addEvent({
       delay: 10000,
       callback: () => {
-        const enemy = new Enemy(this, 800, 400);
-        enemy.enterFromOutside(4500);
+        const enemy = new Enemy(this, 1256, 400);
+        enemy.enterFromOutside(6000);
         enemy.play('walk', true);
         this.physics.add.collider(
           this.player!,
@@ -280,7 +271,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, width, height);
 
     this.layer_11 = this.add.tileSprite(
-      628 / 2,
+      this.screen_width / 2,
       493 / 2,
       width,
       height,

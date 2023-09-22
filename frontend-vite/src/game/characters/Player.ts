@@ -16,6 +16,21 @@ export class Player extends Phaser.GameObjects.Sprite {
   hp: number = 10000;
   attackRange: number = 100;
 
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    super(scene, x, y, 'player');
+
+    // Add the player to the scene
+    scene.add.existing(this);
+    scene.physics.world.enable(this);
+
+    this.setScale(2);
+    this.flipX = true;
+
+    // player properties
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    body.setSize(40, 40);
+  }
+
   damage(enemy: Enemy, damageAmount: number) {
     enemy.takeDamage(damageAmount);
     console.log('enemy hp:', enemy.hp);
@@ -165,20 +180,5 @@ export class Player extends Phaser.GameObjects.Sprite {
         this.x = 200;
       }
     });
-  }
-
-  constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'player');
-
-    // Add the player to the scene
-    scene.add.existing(this);
-    scene.physics.world.enable(this);
-
-    this.setScale(2);
-    this.flipX = true;
-
-    // player properties
-    const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setSize(40, 40);
   }
 }
