@@ -1,5 +1,5 @@
 #phaser {
   position: relative;
-  border-radius: 8px;
   overflow: hidden;
+  @apply shadow-[0px_0px_0px_0px_#63b3ed];
 }

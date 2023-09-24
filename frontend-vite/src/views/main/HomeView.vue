@@ -1,16 +1,10 @@
 <template>
   <div class="home-wrapper">
+    <dynamic-sidebar left />
     <div class="home-wrapper__content">
-      <div class="home-wrapper__content-left">
-        <h1>Home</h1>
-        <button @click="logout">Logout</button>
-      </div>
       <phaser-game />
-      <div class="home-wrapper__content-right">
-        <h1>Home</h1>
-        <button @click="logout">Logout</button>
-      </div>
     </div>
+    <dynamic-sidebar right />
   </div>
 </template>
 
@@ -18,6 +12,7 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import PhaserGame from '@/components/Phaser/PhaserGame.vue';
+import DynamicSidebar from '@/components/Sidebar/DynamicSidebar.vue';
 
 const user = ref('');
 
