@@ -1,6 +1,12 @@
 <template>
   <div class="home-wrapper">
-    <dynamic-sidebar left />
+    <dynamic-sidebar left class="home-wrapper__sidebar">
+      <i class="fa-solid fa-hand-back-fist attack"></i>
+      <i class="fa-solid fa-shield attack"></i>
+      <i class="fa-solid fa-heart attack"></i>
+      <i class="fa-solid fa-hand-back-fist attack"></i>
+      <i class="fa-solid fa-hand-back-fist attack"></i>
+    </dynamic-sidebar>
     <div class="home-wrapper__content">
       <phaser-game />
     </div>

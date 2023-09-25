@@ -6,6 +6,7 @@
       closed: !isSidebarOpen
     }"
   >
+    <slot v-if="isSidebarOpen" />
     <button
       v-if="left"
       @click="toggleSidebar"
